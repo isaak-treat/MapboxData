@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Key from "../img/key.png";
+import Filter from "./Filter"
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhYWt0cmVhdHkiLCJhIjoiY2t1Mzhta2xnMW00MzJvczhmNzAxYmFmMyJ9.H05SHwWlCus6O_MBcXFnUQ';
 
@@ -33,6 +34,47 @@ export default function App() {
           'type': 'geojson',
           'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
           });
+
+
+          const layers = map.current.getStyle().layers;
+          const labelLayerId = layers.find(
+            (layer) => layer.type === 'symbol' && layer.layout['text-field']
+          ).id;
+
+          map.current.addLayer(
+            {
+              'id': 'add-3d-buildings',
+              'source': 'composite',
+              'source-layer': 'building',
+              'filter': ['==', 'extrude', 'true'],
+              'type': 'fill-extrusion',
+              'minzoom': 15,
+              'paint': {
+                'fill-extrusion-color': '#aaa',
+
+                'fill-extrusion-height': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  15,
+                  0,
+                  15.05,
+                  ['get', 'height']
+                ],
+                'fill-extrusion-base': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  15,
+                  0,
+                  15.05,
+                  ['get', 'min_height']
+                ],
+                'fill-extrusion-opacity': 0.6
+              }
+            },
+            labelLayerId
+          );
            
           map.current.addLayer(
           {
@@ -180,6 +222,9 @@ export default function App() {
                   <p>1.0</p>
                   <p>6.0</p>
                 </div>
+            </div>
+            <div className="filter">
+              <Filter />
             </div>
             <div ref={mapContainer} className="map-container" />
         </div>
