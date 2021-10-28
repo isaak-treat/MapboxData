@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import Key from "../img/key.png";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhYWt0cmVhdHkiLCJhIjoiY2t1Mzhta2xnMW00MzJvczhmNzAxYmFmMyJ9.H05SHwWlCus6O_MBcXFnUQ';
 
@@ -7,9 +8,9 @@ export default function App() {
 
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const [lng, setLng] = useState(-99);
-    const [lat, setLat] = useState(38);
-    const [zoom, setZoom] = useState(4);
+    const [lng, setLng] = useState(-99.0000);
+    const [lat, setLat] = useState(38.0000);
+    const [zoom, setZoom] = useState(4.00);
 
     // Initializes Map
     useEffect(() => {
@@ -172,6 +173,13 @@ export default function App() {
         <div>
             <div className="sidebar">
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+            </div>
+            <div className="key">
+                <img src={Key} alt="Key" />
+                <div className="key-text">
+                  <p>1.0</p>
+                  <p>6.0</p>
+                </div>
             </div>
             <div ref={mapContainer} className="map-container" />
         </div>
