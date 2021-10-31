@@ -214,6 +214,22 @@ export default function Map() {
           setLat(map.current.getCenter().lat.toFixed(4));
           setZoom(map.current.getZoom().toFixed(2));
         });
+
+        map.current.on('click', 'earthquakes-point', (e) => {
+          // Copy coordinates array.
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const description = e.features[0].properties.description;
+          
+        });
+
+        map.current.on('mouseenter', 'earthquakes-point', () => {
+          map.current.getCanvas().style.cursor = 'pointer';
+        });
+           
+          // Change it back to a pointer when it leaves.
+        map.current.on('mouseleave', 'earthquakes-point', () => {
+          map.current.getCanvas().style.cursor = '';
+        });
       });
 
     return(
