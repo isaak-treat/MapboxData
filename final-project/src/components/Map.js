@@ -218,8 +218,13 @@ export default function Map() {
         map.current.on('click', 'earthquakes-point', (e) => {
           // Copy coordinates array.
           const coordinates = e.features[0].geometry.coordinates.slice();
-          const description = e.features[0].properties.description;
+          const magnitude = e.features[0].properties.mag;
+          const Tsunami = e.features[0].properties.tsunami;
           
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + Tsunami)
+            .addTo(map.current);
         });
 
         map.current.on('mouseenter', 'earthquakes-point', () => {
