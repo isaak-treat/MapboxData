@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import Key from "../img/key.png";
-import Filter from "./Filter"
+import Schema from "../img/data_schema.png";
+import Filter from "./Filter";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhYWt0cmVhdHkiLCJhIjoiY2t1Mzhta2xnMW00MzJvczhmNzAxYmFmMyJ9.H05SHwWlCus6O_MBcXFnUQ';
 
@@ -276,6 +277,7 @@ export default function Map() {
                 <Filter />
             </div>
             <div ref={mapContainer} className="map-container" />
+            <img src={Schema} />
         </div>
     )
 }
