@@ -36,6 +36,30 @@ export default function Map() {
           'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
           });
 
+          map.current.addLayer({
+            'id': 'sky',
+            'type': 'sky',
+            'paint': {
+            'sky-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            0,
+            5,
+            0.3,
+            8,
+            1
+            ],
+            // set up the sky layer for atmospheric scattering
+            'sky-type': 'atmosphere',
+            // explicitly set the position of the sun rather than allowing the sun to be attached to the main light source
+            // 'sky-atmosphere-sun': getSunPosition(),
+            // set the intensity of the sun as a light source (0-100 with higher values corresponding to brighter skies)
+            'sky-atmosphere-sun-intensity': 5
+            }
+          });
+
 
 
         // Used for map layering... static, shouldn't ever need to be touched
@@ -206,8 +230,7 @@ export default function Map() {
           'waterway-label'
           );
         });
-
-
+        
         // Adds moving map functionality
         map.current.on('move', () => {
           setLng(map.current.getCenter().lng.toFixed(4));
@@ -223,7 +246,7 @@ export default function Map() {
           
           new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + ( Tsunami == 0 ? "<h3>No" : "<h3>Yes" ) )
+            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + ( Tsunami === 0 ? "<h3>No" : "<h3>Yes" ) )
             .addTo(map.current);
         });
 
