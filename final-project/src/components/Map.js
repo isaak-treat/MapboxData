@@ -223,7 +223,7 @@ export default function Map() {
           
           new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + Tsunami)
+            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + ( Tsunami == 0 ? "<h3>No" : "<h3>Yes" ) )
             .addTo(map.current);
         });
 
