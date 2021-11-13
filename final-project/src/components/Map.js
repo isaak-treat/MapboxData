@@ -3,7 +3,6 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 
 import Key from "../img/key.png";
 import Schema from "../img/data_schema.png";
-import Filter from "./Filter";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhYWt0cmVhdHkiLCJhIjoiY2t1Mzhta2xnMW00MzJvczhmNzAxYmFmMyJ9.H05SHwWlCus6O_MBcXFnUQ';
 
@@ -14,6 +13,9 @@ export default function Map() {
     const [lng, setLng] = useState(-99.0000);
     const [lat, setLat] = useState(38.0000);
     const [zoom, setZoom] = useState(4.00);
+
+    var lowestMag = 0;
+    var mapFilter = ['>=', 'mag', lowestMag];
 
     // Initializes Map
     useEffect(() => {
@@ -185,6 +187,7 @@ export default function Map() {
           'type': 'circle',
           'source': 'earthquakes',
           'minzoom': 7,
+          'filter': mapFilter,
           'paint': {
           // Size circle radius by earthquake magnitude and zoom level
           'circle-radius': [
@@ -259,9 +262,21 @@ export default function Map() {
         map.current.on('mouseleave', 'earthquakes-point', () => {
           map.current.getCanvas().style.cursor = '';
         });
-      });
 
-    return(
+        document.getElementById('filterBtn').onclick = function ()
+        {
+            addFilter(document.getElementById("filterSelect").value,
+            'mag',
+            parseFloat(document.getElementById('magLow').value))
+        };
+    });
+
+    function addFilter(symbol, param, value) {
+        map.current.setFilter('earthquakes-point', [symbol, param, value]);
+        map.current.setFilter('earthquakes-heat', [symbol, param, value]);
+    }
+
+    return (
         <div>
             <div className="sidebar">
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
@@ -274,7 +289,17 @@ export default function Map() {
                 </div>
             </div>
             <div className="filter">
-                <Filter />
+                ===Filters===<br/>
+                Magnitude:<br/>
+                <input type="text" id="magLow" /><br />
+                Select Min or Max:<br/>
+                <select id="filterSelect">
+                    <option value=">">Minimum</option>
+                    <option value="<">Maximum</option>
+                </select><br/>
+                <button id="filterBtn" background-color='transparent'>
+                    Filter
+                </button>
             </div>
             <div ref={mapContainer} className="map-container" />
             <img src={Schema} />
