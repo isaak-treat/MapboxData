@@ -285,7 +285,7 @@ export default function Map() {
             if (document.getElementById("feltSelect").value === "all") {
                 filters.push(["has", "felt"]);
             } else if (document.getElementById("feltSelect").value === "yes") {
-                filters.push([">=", "felt", 1]);
+                filters.push([">=", ["get", "felt"], 1]);
             } else {
                 filters.push(["==", ["to-number", ["get", "felt"]], 0]);
             }
