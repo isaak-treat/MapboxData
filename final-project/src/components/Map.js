@@ -14,9 +14,6 @@ export default function Map() {
     const [lat, setLat] = useState(38.0000);
     const [zoom, setZoom] = useState(4.00);
 
-    var lowestMag = 0;
-    var mapFilter = ['>=', 'mag', lowestMag];
-
     // Initializes Map
     useEffect(() => {
         if (map.current) return; // initialize map only once
@@ -187,7 +184,6 @@ export default function Map() {
           'type': 'circle',
           'source': 'earthquakes',
           'minzoom': 7,
-          'filter': mapFilter,
           'paint': {
           // Size circle radius by earthquake magnitude and zoom level
           'circle-radius': [
@@ -247,10 +243,11 @@ export default function Map() {
           const coordinates = e.features[0].geometry.coordinates.slice();
           const magnitude = e.features[0].properties.mag;
           const Tsunami = e.features[0].properties.tsunami;
+          const felt = e.features[0].properties.felt
           
-          new mapboxgl.Popup()
+          new mapboxgl.Popup({ closeButton: false })
             .setLngLat(coordinates)
-            .setHTML("<h3>Magnitude: <h3>" + magnitude + "<h1></h1>" + "<h3>Tsunami: <h3>" + ( Tsunami === 0 ? "<h3>No" : "<h3>Yes" ) )
+            .setHTML("<h3>Magnitude: " + magnitude + "<h3>" + "<h1></h1>" + "<h3>Tsunami: " + (Tsunami === 0 ? "No" : "Yes") + "<h3>" + "<h1></h1>" + "<h3>Felt by: " + (felt >= 1 ? felt + " people" : "0 people" + "<h3>"))
             .addTo(map.current);
         });
 
@@ -263,17 +260,52 @@ export default function Map() {
           map.current.getCanvas().style.cursor = '';
         });
 
+        // Function to add filters to both the heatmap and point layers
         document.getElementById('filterBtn').onclick = function ()
         {
-            addFilter(document.getElementById("filterSelect").value,
-            'mag',
-            parseFloat(document.getElementById('magLow').value))
+            var filters = []; // Holds all filters (there are 3 guaranteed)
+
+            // Filter for magnitude value
+            if (parseFloat(document.getElementById('magEntry').value)) {
+                filters.push([document.getElementById("filterSelect").value,
+                    ["get", "mag"],
+                parseFloat(document.getElementById('magEntry').value)]);
+            } else {
+                filters.push(["has", "mag"]);
+            }
+
+            // Filter for tsunami value
+            if (document.getElementById("tsunamiSelect").value === "all") {
+                filters.push(["has", "tsunami"]);
+            } else {
+                filters.push(["==", ["get", "tsunami"], parseInt(document.getElementById("tsunamiSelect").value)]);
+            }
+
+            // Filter for felt value
+            if (document.getElementById("feltSelect").value === "all") {
+                filters.push(["has", "felt"]);
+            } else if (document.getElementById("feltSelect").value === "yes") {
+                filters.push([">=", "felt", 1]);
+            } else {
+                filters.push(["==", ["to-number", ["get", "felt"]], 0]);
+            }
+
+            // Set the 3 above filters to the two earthquake layers
+            addFilter(filters);
         };
+
+        // Function to clear any active filters
+        document.getElementById('clearBtn').onclick = function ()
+        {
+            map.current.setFilter('earthquakes-point', null);
+            map.current.setFilter('earthquakes-heat', null);
+        }
     });
 
-    function addFilter(symbol, param, value) {
-        map.current.setFilter('earthquakes-point', [symbol, param, value]);
-        map.current.setFilter('earthquakes-heat', [symbol, param, value]);
+    // Function to add filters to layers, hard-coded to 3 filters
+    function addFilter(filters) {
+        map.current.setFilter('earthquakes-point', ["all", filters[0], filters[1], filters[2]]);
+        map.current.setFilter('earthquakes-heat', ["all", filters[0], filters[1], filters[2]]); 
     }
 
     return (
@@ -291,14 +323,29 @@ export default function Map() {
             <div className="filter">
                 ===Filters===<br/>
                 Magnitude:<br/>
-                <input type="text" id="magLow" /><br />
+                <input type="text" id="magEntry" /><br />
                 Select Min or Max:<br/>
                 <select id="filterSelect">
-                    <option value=">">Minimum</option>
-                    <option value="<">Maximum</option>
-                </select><br/>
+                    <option value=">=">Minimum</option>
+                    <option value="<=">Maximum</option>
+                </select><br />
+                Tsunami:<br />
+                <select id="tsunamiSelect">
+                    <option value="all">All</option>
+                    <option value="1">Only Tsuanmis</option>
+                    <option value="0">No Tsunamies</option>
+                </select><br />
+                Earthquake Felt:<br />
+                <select id="feltSelect">
+                    <option value="all">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select><br />
                 <button id="filterBtn" background-color='transparent'>
                     Filter
+                </button>
+                <button id="clearBtn" background-color='transparent'>
+                    Clear Filters
                 </button>
             </div>
             <div ref={mapContainer} className="map-container" />
