@@ -266,7 +266,7 @@ export default function Map() {
 
             // Filter for magnitude value
             if (parseFloat(document.getElementById('magEntry').value)) {
-                filters.push([document.getElementById("filterSelect").value,
+                filters.push([document.getElementById("magSelect").value,
                     ["get", "mag"],
                 parseFloat(document.getElementById('magEntry').value)]);
             } else {
@@ -298,6 +298,22 @@ export default function Map() {
         {
             map.current.setFilter('earthquakes-point', null);
             map.current.setFilter('earthquakes-heat', null);
+            document.getElementById("magEntry").value = null;
+            document.getElementById("magSelect").value = ">=";
+            document.getElementById("tsunamiSelect").value = "all";
+            document.getElementById("feltSelect").value = "all";
+        }
+
+        // Function to show and hide (toggle) filters
+        document.getElementById('toggleFiltersBtn').onclick = function ()
+        {
+            if (document.getElementById('filterSet').style.display === "none") {
+                document.getElementById('filterSet').style.display = "block";
+                document.getElementById('toggleFiltersBtn').textContent = "Hide Filters";
+            } else {
+                document.getElementById('filterSet').style.display = "none";
+                document.getElementById('toggleFiltersBtn').textContent = "Show Filters";
+            }
         }
     });
 
@@ -320,32 +336,38 @@ export default function Map() {
                 </div>
             </div>
             <div className="filter">
-                ===Filters===<br/>
-                Magnitude:<br/>
-                <input type="text" id="magEntry" /><br />
-                Select Min or Max:<br/>
-                <select id="filterSelect">
-                    <option value=">=">Minimum</option>
-                    <option value="<=">Maximum</option>
-                </select><br />
-                Tsunami:<br />
-                <select id="tsunamiSelect">
-                    <option value="all">All</option>
-                    <option value="1">Only Tsuanmis</option>
-                    <option value="0">No Tsunamies</option>
-                </select><br />
-                Earthquake Felt:<br />
-                <select id="feltSelect">
-                    <option value="all">All</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select><br />
-                <button id="filterBtn" background-color='transparent'>
-                    Filter
+                <button id="toggleFiltersBtn">
+                    Show Filters
                 </button>
-                <button id="clearBtn" background-color='transparent'>
-                    Clear Filters
-                </button>
+
+                <div id="filterSet" style={{ display:'none' }}>
+                    <br />======Filters======<br /><br />
+                    Enter Magnitude:<br/>
+                    <input type="text" id="magEntry" /><br /><br/>
+                    Filter Magntidue as Minimum or Maximum:<br/>
+                    <select id="magSelect">
+                        <option value=">=">Minimum</option>
+                        <option value="<=">Maximum</option>
+                    </select><br/><br/>
+                    Filter by Earthquakes that Caused Tsunamis:<br />
+                    <select id="tsunamiSelect">
+                        <option value="all">Show All</option>
+                        <option value="1">Show Only Earthquakes that Caused Tsunamis</option>
+                        <option value="0">Show Only Earthquakes that Didn't Cause Tsunamis</option>
+                    </select><br /><br />
+                    Filter by Earthquakes that <br /> People Reported to have Felt:<br />
+                    <select id="feltSelect">
+                        <option value="all">Show All</option>
+                        <option value="yes">Show Only Felt Earthquakes</option>
+                        <option value="no">Show Only Unfelt Earthquakes</option>
+                    </select><br /><br />
+                    <button id="filterBtn" background-color='transparent' margin-right="50px">
+                        Filter
+                    </button>
+                    <button id="clearBtn" background-color='transparent'>
+                        Clear Filters
+                    </button>
+                </div>
             </div>
             <div ref={mapContainer} className="map-container" />
         </div>

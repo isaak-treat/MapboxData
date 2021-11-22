@@ -72,9 +72,8 @@ button {
     margin-top: 5px;
 }
 
-#filterBtn img {
-    margin-top: -4px;
-    margin-left: -7px;
+#filterBtn {
+    margin-right: 15px;
 }
 
 .Bio {

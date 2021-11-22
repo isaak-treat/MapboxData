@@ -8,7 +8,7 @@ export default function Bio() {
             'git': "https://github.com/isaak-treat"
         },
         {
-            'name': "Harrison Edward Gerber",
+            'name': "Harrison Gerber",
             'git': "https://github.com/kingneo77"
         },
         {
@@ -16,11 +16,11 @@ export default function Bio() {
             'git': "https://github.com/MarshallAllshouseUCCS"
         },
         {
-            'name': "Connor F",
+            'name': "Connor Folz",
             'git': "https://github.com/hadhog75"
         },
         {
-            'name': "Ahmad passionfruity",
+            'name': "Ahmad Omar",
             'git': "https://github.com/gulgarcon"
         }
     ]
