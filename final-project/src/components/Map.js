@@ -342,7 +342,7 @@ export default function Map() {
                 <img src={Key} alt="Key" />
                 <div className="key-text">
                     <p>1.0</p>
-                    <p>Magnitude of Points</p>
+                    <p>Quake Magnitude (Point)</p>
                     <p>10.0</p>
                 </div>
             </div>
@@ -352,7 +352,7 @@ export default function Map() {
                 <img src={heatKey} alt="heatKey" />
                 <div className="heatMap">
                     <p>Least</p>
-                    <p>Heatmap Density</p>
+                    <p>Density of Quakes</p>
                     <p>Most</p>
                 </div>
             </div>
