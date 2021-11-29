@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import Key from "../img/key.png";
+import heatKey from "../img/heatmapbar.jpg";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhYWt0cmVhdHkiLCJhIjoiY2t1Mzhta2xnMW00MzJvczhmNzAxYmFmMyJ9.H05SHwWlCus6O_MBcXFnUQ';
 
@@ -118,8 +119,8 @@ export default function Map() {
           ['get', 'mag'],
           0,
           0,
-          6,
-          1
+          10,
+          2
           ],
           // Increase the heatmap color weight weight by zoom level
           // heatmap-intensity is a multiplier on top of heatmap-weight
@@ -140,17 +141,17 @@ export default function Map() {
           ['linear'],
           ['heatmap-density'],
           0,
-          'rgba(33,102,172,0)',
+          'rgba(153,238,255,0)',
           0.2,
-          'rgb(103,169,207)',
+          'rgb(102,179,255)',
           0.4,
-          'rgb(209,229,240)',
+          'rgb(51,85,255)',
           0.6,
-          'rgb(253,219,199)',
+          'rgb(43,0,255)',
           0.8,
-          'rgb(239,138,98)',
+          'rgb(0,34,204)',
           1,
-          'rgb(178,24,43)'
+          'rgb(0,21,128)'
           ],
           // Adjust the heatmap radius by zoom level
           'heatmap-radius': [
@@ -210,7 +211,15 @@ export default function Map() {
           5,
           'rgb(239,138,98)',
           6,
-          'rgb(178,24,43)'
+          'rgb(178,24,43)',
+          7,
+          'rgb(153,0,0)',
+          8,
+          'rgb(102,0,0)',
+          9,
+          'rgb(51,0,0)',
+          10,
+          'rgb(0,0,0)',
           ],
           'circle-stroke-color': 'white',
           'circle-stroke-width': 1,
@@ -329,12 +338,25 @@ export default function Map() {
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
             <div className="key">
+                
                 <img src={Key} alt="Key" />
                 <div className="key-text">
                     <p>1.0</p>
-                    <p>6.0</p>
+                    <p>Magnitude of Points</p>
+                    <p>10.0</p>
                 </div>
             </div>
+
+            <div className="secondkey">
+                
+                <img src={heatKey} alt="heatKey" />
+                <div className="heatMap">
+                    <p>Least</p>
+                    <p>Heatmap Density</p>
+                    <p>Most</p>
+                </div>
+            </div>
+            
             <div className="filter">
                 <button id="toggleFiltersBtn">
                     Show Filters

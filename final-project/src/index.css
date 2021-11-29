@@ -36,7 +36,30 @@ body {
     height: 30px;
 }
 
+.secondkey {
+    background-color: rgba(35, 55, 75, 0.9);
+    color: #fff;
+    padding: 6px 12px;
+    font-family: monospace;
+    z-index: 1;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    margin: 12px;
+    width: 280px;
+    border-radius: 4px;
+    height: 30px;
+}
+
 .key-text {
+    display: flex;
+    justify-content: space-between;
+    align-content: space-around;
+    flex-wrap: wrap;
+    height: 15px;
+}
+
+.heatMap {
     display: flex;
     justify-content: space-between;
     align-content: space-around;
@@ -51,7 +74,7 @@ body {
     font-family: monospace;
     z-index: 1;
     position: absolute;
-    top: 75px;
+    top: 120px;
     left: 0;
     margin: 12px;
     border-radius: 4px;
