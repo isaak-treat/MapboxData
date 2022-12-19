@@ -249,13 +249,9 @@ export default function Map() {
         map.current.on('click', 'earthquakes-point', (e) => {
           // Copy coordinates array.
           const coordinates = e.features[0].geometry.coordinates.slice();
-          const magnitude = e.features[0].properties.mag;
-          const Tsunami = e.features[0].properties.tsunami;
-          const felt = e.features[0].properties.felt
           
           new mapboxgl.Popup({ closeButton: false })
             .setLngLat(coordinates)
-            .setHTML("<h3>Magnitude: " + magnitude + "<h3>" + "<h1></h1>" + "<h3>Tsunami: " + (Tsunami === 0 ? "No" : "Yes") + "<h3>" + "<h1></h1>" + "<h3>Felt by: " + (felt >= 1 ? felt + " people" : "0 people" + "<h3>"))
             .addTo(map.current);
         });
 
